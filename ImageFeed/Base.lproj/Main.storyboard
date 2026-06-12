@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Prf-VC-001">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Tbr-VC-001">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -86,8 +86,10 @@
                             <constraint firstAttribute="bottom" secondItem="Im8-tv-Lq4" secondAttribute="bottom" id="Bm5-qe-Xy3"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="ImL-ni-701"/>
                     <connections>
                         <outlet property="tableView" destination="Im8-tv-Lq4" id="Ot9-tv-Kp2"/>
+                        <segue destination="Sgl-VC-001" kind="show" identifier="ShowSingleImage" id="ImL-sg-702"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -163,6 +165,7 @@
                             <constraint firstItem="Dsc-lb-007" firstAttribute="trailing" secondItem="Nam-lb-004" secondAttribute="trailing" id="C13-ds-313"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="Prf-tbi-701"/>
                     <navigationItem key="navigationItem" id="Prf-ni-010"/>
                     <connections>
                         <outlet property="avatarImageView" destination="Avt-im-003" id="Out-av-201"/>
@@ -176,11 +179,90 @@
             </objects>
             <point key="canvasLocation" x="-797" y="92"/>
         </scene>
+        <!--Single Image View Controller-->
+        <scene sceneID="Sgl-Sc-950">
+            <objects>
+                <viewController id="Sgl-VC-001" customClass="SingleImageViewController" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Sgl-vw-002">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Sgl-im-003">
+                                <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Sgl-sa-004"/>
+                        <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Sgl-im-003" firstAttribute="top" secondItem="Sgl-sa-004" secondAttribute="top" id="Sgl-cn-301"/>
+                            <constraint firstItem="Sgl-sa-004" firstAttribute="bottom" secondItem="Sgl-im-003" secondAttribute="bottom" id="Sgl-cn-302"/>
+                            <constraint firstItem="Sgl-im-003" firstAttribute="leading" secondItem="Sgl-sa-004" secondAttribute="leading" id="Sgl-cn-303"/>
+                            <constraint firstItem="Sgl-sa-004" firstAttribute="trailing" secondItem="Sgl-im-003" secondAttribute="trailing" id="Sgl-cn-304"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Sgl-ni-005"/>
+                    <connections>
+                        <outlet property="imageView" destination="Sgl-im-003" id="Sgl-ot-006"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sgl-fr-007" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-100" y="92"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="Tbr-Sc-960">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="Tbr-VC-001" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Tbr-bar-002">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <tabBarAppearance key="standardAppearance">
+                            <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        </tabBarAppearance>
+                    </tabBar>
+                    <connections>
+                        <segue destination="Nav-VC-001" kind="relationship" relationship="viewControllers" id="Tbr-sg-003"/>
+                        <segue destination="Prf-VC-001" kind="relationship" relationship="viewControllers" id="Tbr-sg-004"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Tbr-fr-005" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="60" y="92"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Nav-Sc-970">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Nav-VC-001" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="Nav-tbi-002"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Nav-bar-003">
+                        <rect key="frame" x="0.0" y="48" width="402" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <navigationBarAppearance key="standardAppearance">
+                            <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        </navigationBarAppearance>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Nav-sg-004"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nav-fr-005" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="918" y="-218"/>
+        </scene>
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
         <image name="avatar" width="70" height="70"/>
         <image name="like_button_on" width="42" height="42"/>
         <image name="logout_button" width="44" height="44"/>
+        <image name="tab_editorial_active" width="30" height="30"/>
+        <image name="tab_profile_active" width="30" height="30"/>
     </resources>
 </document>
