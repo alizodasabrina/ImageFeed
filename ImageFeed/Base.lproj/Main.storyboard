@@ -86,10 +86,10 @@
                             <constraint firstAttribute="bottom" secondItem="Im8-tv-Lq4" secondAttribute="bottom" id="Bm5-qe-Xy3"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="ImL-ni-701"/>
+                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="ImL-tbi-701"/>
                     <connections>
                         <outlet property="tableView" destination="Im8-tv-Lq4" id="Ot9-tv-Kp2"/>
-                        <segue destination="Sgl-VC-001" kind="show" identifier="ShowSingleImage" id="ImL-sg-702"/>
+                        <segue destination="Sgl-VC-001" kind="presentation" identifier="ShowSingleImage" id="ImL-sg-702"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -103,77 +103,9 @@
                     <view key="view" contentMode="scaleToFill" id="Prf-vw-002">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar" translatesAutoresizingMaskIntoConstraints="NO" id="Avt-im-003">
-                                <rect key="frame" x="16" y="80" width="70" height="70"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="Avt-im-003" secondAttribute="height" multiplier="1:1" id="Avt-ar-101"/>
-                                    <constraint firstAttribute="width" constant="70" id="Avt-wd-102"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="35"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Екатерина Новикова" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nam-lb-004">
-                                <rect key="frame" x="16" y="158" width="370" height="27.5"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="23"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lgt-bt-005">
-                                <rect key="frame" x="342" y="93" width="44" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="Lgt-ht-103"/>
-                                    <constraint firstAttribute="width" constant="44" id="Lgt-wd-104"/>
-                                </constraints>
-                                <state key="normal" image="logout_button"/>
-                                <connections>
-                                    <action selector="didTapLogoutButton" destination="Prf-VC-001" eventType="touchUpInside" id="Lgt-ac-105"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@ekaterina_nov" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Log-lb-006">
-                                <rect key="frame" x="16" y="193.5" width="370" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" red="0.68235294120000001" green="0.68627450980000004" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, World!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dsc-lb-007">
-                                <rect key="frame" x="16" y="217.5" width="370" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Prf-sa-008"/>
-                        <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="Avt-im-003" firstAttribute="top" secondItem="Prf-sa-008" secondAttribute="top" constant="32" id="Ct1-av-301"/>
-                            <constraint firstItem="Avt-im-003" firstAttribute="leading" secondItem="Prf-sa-008" secondAttribute="leading" constant="16" id="Ct2-av-302"/>
-                            <constraint firstItem="Lgt-bt-005" firstAttribute="centerY" secondItem="Avt-im-003" secondAttribute="centerY" id="Ct3-lo-303"/>
-                            <constraint firstItem="Prf-sa-008" firstAttribute="trailing" secondItem="Lgt-bt-005" secondAttribute="trailing" constant="16" id="Ct4-lo-304"/>
-                            <constraint firstItem="Nam-lb-004" firstAttribute="leading" secondItem="Avt-im-003" secondAttribute="leading" id="Ct5-nm-305"/>
-                            <constraint firstItem="Nam-lb-004" firstAttribute="top" secondItem="Avt-im-003" secondAttribute="bottom" constant="8" id="Ct6-nm-306"/>
-                            <constraint firstItem="Prf-sa-008" firstAttribute="trailing" secondItem="Nam-lb-004" secondAttribute="trailing" constant="16" id="Ct7-nm-307"/>
-                            <constraint firstItem="Log-lb-006" firstAttribute="top" secondItem="Nam-lb-004" secondAttribute="bottom" constant="8" id="Ct8-lg-308"/>
-                            <constraint firstItem="Log-lb-006" firstAttribute="leading" secondItem="Nam-lb-004" secondAttribute="leading" id="Ct9-lg-309"/>
-                            <constraint firstItem="Log-lb-006" firstAttribute="trailing" secondItem="Nam-lb-004" secondAttribute="trailing" id="C10-lg-310"/>
-                            <constraint firstItem="Dsc-lb-007" firstAttribute="top" secondItem="Log-lb-006" secondAttribute="bottom" constant="8" id="C11-ds-311"/>
-                            <constraint firstItem="Dsc-lb-007" firstAttribute="leading" secondItem="Nam-lb-004" secondAttribute="leading" id="C12-ds-312"/>
-                            <constraint firstItem="Dsc-lb-007" firstAttribute="trailing" secondItem="Nam-lb-004" secondAttribute="trailing" id="C13-ds-313"/>
-                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="Prf-tbi-701"/>
-                    <navigationItem key="navigationItem" id="Prf-ni-010"/>
-                    <connections>
-                        <outlet property="avatarImageView" destination="Avt-im-003" id="Out-av-201"/>
-                        <outlet property="descriptionLabel" destination="Dsc-lb-007" id="Out-ds-202"/>
-                        <outlet property="loginNameLabel" destination="Log-lb-006" id="Out-lg-203"/>
-                        <outlet property="logoutButton" destination="Lgt-bt-005" id="Out-lo-204"/>
-                        <outlet property="nameLabel" destination="Nam-lb-004" id="Out-nm-205"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Prf-fr-009" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -182,27 +114,64 @@
         <!--Single Image View Controller-->
         <scene sceneID="Sgl-Sc-950">
             <objects>
-                <viewController id="Sgl-VC-001" customClass="SingleImageViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="Sgl-VC-001" customClass="SingleImageViewController" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Sgl-vw-002">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Sgl-im-003">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Scr-vw-501">
                                 <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
-                            </imageView>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Sgl-im-003">
+                                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                                    </imageView>
+                                </subviews>
+                                <viewLayoutGuide key="contentLayoutGuide" id="Scr-cl-502"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="Scr-fl-503"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Sgl-VC-001" id="Scr-dl-504"/>
+                                </connections>
+                            </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bck-bt-401">
+                                <rect key="frame" x="8" y="8" width="48" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="Bck-wd-402"/>
+                                    <constraint firstAttribute="height" constant="48" id="Bck-ht-403"/>
+                                </constraints>
+                                <state key="normal" image="nav_back_button_white"/>
+                                <connections>
+                                    <action selector="didTapBackButton" destination="Sgl-VC-001" eventType="touchUpInside" id="Bck-ac-404"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Shr-bt-601">
+                                <rect key="frame" x="176" y="816" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Shr-ht-602"/>
+                                    <constraint firstAttribute="width" constant="50" id="Shr-wd-603"/>
+                                </constraints>
+                                <state key="normal" image="share_button"/>
+                                <connections>
+                                    <action selector="didTapShareButton" destination="Sgl-VC-001" eventType="touchUpInside" id="Shr-ac-604"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Sgl-sa-004"/>
                         <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="Sgl-im-003" firstAttribute="top" secondItem="Sgl-sa-004" secondAttribute="top" id="Sgl-cn-301"/>
-                            <constraint firstItem="Sgl-sa-004" firstAttribute="bottom" secondItem="Sgl-im-003" secondAttribute="bottom" id="Sgl-cn-302"/>
-                            <constraint firstItem="Sgl-im-003" firstAttribute="leading" secondItem="Sgl-sa-004" secondAttribute="leading" id="Sgl-cn-303"/>
-                            <constraint firstItem="Sgl-sa-004" firstAttribute="trailing" secondItem="Sgl-im-003" secondAttribute="trailing" id="Sgl-cn-304"/>
+                            <constraint firstItem="Scr-vw-501" firstAttribute="top" secondItem="Sgl-vw-002" secondAttribute="top" id="Sgl-cn-301"/>
+                            <constraint firstItem="Sgl-vw-002" firstAttribute="bottom" secondItem="Scr-vw-501" secondAttribute="bottom" id="Sgl-cn-302"/>
+                            <constraint firstItem="Scr-vw-501" firstAttribute="leading" secondItem="Sgl-sa-004" secondAttribute="leading" id="Sgl-cn-303"/>
+                            <constraint firstItem="Sgl-sa-004" firstAttribute="trailing" secondItem="Scr-vw-501" secondAttribute="trailing" id="Sgl-cn-304"/>
+                            <constraint firstItem="Bck-bt-401" firstAttribute="top" secondItem="Sgl-sa-004" secondAttribute="top" constant="8" id="Sgl-cn-305"/>
+                            <constraint firstItem="Bck-bt-401" firstAttribute="leading" secondItem="Sgl-sa-004" secondAttribute="leading" constant="8" id="Sgl-cn-306"/>
+                            <constraint firstItem="Shr-bt-601" firstAttribute="centerX" secondItem="Sgl-sa-004" secondAttribute="centerX" id="Sgl-cn-307"/>
+                            <constraint firstItem="Sgl-sa-004" firstAttribute="bottom" secondItem="Shr-bt-601" secondAttribute="bottom" constant="17" id="Sgl-cn-308"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Sgl-ni-005"/>
                     <connections>
                         <outlet property="imageView" destination="Sgl-im-003" id="Sgl-ot-006"/>
+                        <outlet property="scrollView" destination="Scr-vw-501" id="Sgl-ot-507"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sgl-fr-007" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -224,7 +193,7 @@
                         </tabBarAppearance>
                     </tabBar>
                     <connections>
-                        <segue destination="Nav-VC-001" kind="relationship" relationship="viewControllers" id="Tbr-sg-003"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="Tbr-sg-003"/>
                         <segue destination="Prf-VC-001" kind="relationship" relationship="viewControllers" id="Tbr-sg-004"/>
                     </connections>
                 </tabBarController>
@@ -232,36 +201,12 @@
             </objects>
             <point key="canvasLocation" x="60" y="92"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Nav-Sc-970">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Nav-VC-001" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="Nav-tbi-002"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Nav-bar-003">
-                        <rect key="frame" x="0.0" y="48" width="402" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <navigationBarAppearance key="standardAppearance">
-                            <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
-                        </navigationBarAppearance>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Nav-sg-004"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Nav-fr-005" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="918" y="-218"/>
-        </scene>
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="avatar" width="70" height="70"/>
         <image name="like_button_on" width="42" height="42"/>
-        <image name="logout_button" width="44" height="44"/>
+        <image name="nav_back_button_white" width="24" height="24"/>
+        <image name="share_button" width="50" height="50"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
     </resources>
