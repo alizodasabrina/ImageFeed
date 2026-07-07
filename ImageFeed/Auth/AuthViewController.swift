@@ -63,13 +63,13 @@ extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         vc.dismiss(animated: true)
 
-        oauth2Service.fetchOAuthToken(code: code) { [weak self] result in
+        oauth2Service.fetchAuthToken(code: code) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success:
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
-                print("[AuthViewController]: fetchOAuthToken error - \(error)")
+                print("[AuthViewController]: fetchAuthToken error - \(error)")
             }
         }
     }
