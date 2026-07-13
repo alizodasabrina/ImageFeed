@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
 
@@ -25,6 +26,8 @@ final class ProfileViewController: UIViewController {
     }
 
     // MARK: - Private Properties
+
+    private var profileImageServiceObserver: NSObjectProtocol?
 
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "avatar"))
@@ -78,6 +81,21 @@ final class ProfileViewController: UIViewController {
 
         view.backgroundColor = Constants.backgroundColor
         setupConstraints()
+
+        if let profile = ProfileService.shared.profile {
+            updateProfileDetails(profile: profile)
+        }
+
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
     }
 
     // MARK: - Actions
@@ -86,6 +104,33 @@ final class ProfileViewController: UIViewController {
     }
 
     // MARK: - Private Methods
+
+    private func updateProfileDetails(profile: Profile) {
+        nameLabel.text = profile.name.isEmpty
+            ? "Имя не указано"
+            : profile.name
+        loginNameLabel.text = profile.loginName.isEmpty
+            ? "@неизвестный_пользователь"
+            : profile.loginName
+        descriptionLabel.text = (profile.bio?.isEmpty ?? true)
+            ? "Профиль не заполнен"
+            : profile.bio
+    }
+
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+
+        let processor = RoundCornerImageProcessor(cornerRadius: Constants.avatarCornerRadius)
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "avatar"),
+            options: [.processor(processor)]
+        )
+    }
 
     private func setupConstraints() {
         view.addSubview(avatarImageView)
