@@ -31,6 +31,7 @@ final class OAuth2Service {
         assert(Thread.isMainThread)
 
         guard lastCode != code else {
+            print("[OAuth2Service.fetchAuthToken]: duplicate code - \(code)")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
