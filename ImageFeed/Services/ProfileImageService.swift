@@ -45,13 +45,13 @@ final class ProfileImageService {
         task?.cancel()
 
         guard let token = tokenStorage.token else {
-            print("[ProfileImageService]: token is missing")
+            print("[ProfileImageService.fetchProfileImageURL]: token is missing")
             completion(.failure(NetworkError.invalidRequest))
             return
         }
 
         guard let request = makeProfileImageRequest(username: username, token: token) else {
-            print("[ProfileImageService]: invalidRequest")
+            print("[ProfileImageService.fetchProfileImageURL]: invalidRequest")
             completion(.failure(NetworkError.invalidRequest))
             return
         }

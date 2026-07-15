@@ -39,7 +39,7 @@ final class OAuth2Service {
         lastCode = code
 
         guard let request = makeOAuthTokenRequest(code: code) else {
-            print("[OAuth2Service]: invalidRequest")
+            print("[OAuth2Service.fetchAuthToken]: invalidRequest")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }

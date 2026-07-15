@@ -46,7 +46,7 @@ final class ProfileService {
         task?.cancel()
 
         guard let request = makeProfileRequest(token: token) else {
-            print("[ProfileService]: invalidRequest")
+            print("[ProfileService.fetchProfile]: invalidRequest")
             completion(.failure(NetworkError.invalidRequest))
             return
         }
