@@ -39,6 +39,8 @@ final class AuthViewController: UIViewController {
 
     private lazy var logoImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "auth_screen_logo"))
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()

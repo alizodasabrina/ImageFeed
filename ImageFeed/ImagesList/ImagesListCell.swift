@@ -34,6 +34,7 @@ final class ImagesListCell: UITableViewCell {
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = Constants.cornerRadius
         imageView.layer.masksToBounds = true
+        imageView.isUserInteractionEnabled = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()

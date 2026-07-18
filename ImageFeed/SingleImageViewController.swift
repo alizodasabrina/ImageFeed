@@ -37,6 +37,8 @@ final class SingleImageViewController: UIViewController {
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
+        scrollView.clipsToBounds = true
+        scrollView.isMultipleTouchEnabled = true
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
@@ -44,6 +46,7 @@ final class SingleImageViewController: UIViewController {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
         return imageView
     }()
 
