@@ -51,17 +51,17 @@ final class SingleImageViewController: UIViewController {
     }()
 
     private lazy var backButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "nav_back_button_white")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(UIImage(named: "nav_back_button_white"), for: .normal)
         button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         return button
     }()
 
     private lazy var shareButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "share_button")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(UIImage(named: "share_button"), for: .normal)
         button.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
         return button
     }()
