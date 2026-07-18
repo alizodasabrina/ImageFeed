@@ -16,15 +16,23 @@ final class ImagesListViewController: UIViewController {
     private enum Constants {
         static let verticalInset: CGFloat = 12
         static let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
+        static let backgroundColor = UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 1)
     }
-
-    // MARK: - IBOutlets
-
-    @IBOutlet private weak var tableView: UITableView!
 
     // MARK: - Private Properties
 
     private let photosName: [String] = Array(0..<20).map { "\($0)" }
+
+    // MARK: - Subviews
+
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = Constants.backgroundColor
+        tableView.separatorStyle = .none
+        tableView.alwaysBounceVertical = true
+        return tableView
+    }()
 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -38,7 +46,13 @@ final class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupView()
+        setupConstraints()
+
         tableView.register(ImagesListCell.self, forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
+        tableView.dataSource = self
+        tableView.delegate = self
+
         tableView.contentInset = UIEdgeInsets(
             top: Constants.verticalInset,
             left: 0,
@@ -67,6 +81,20 @@ final class ImagesListViewController: UIViewController {
     }
 
     // MARK: - Private Methods
+
+    private func setupView() {
+        view.backgroundColor = Constants.backgroundColor
+        view.addSubview(tableView)
+    }
+
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
+            view.bottomAnchor.constraint(equalTo: tableView.bottomAnchor)
+        ])
+    }
 
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let image = UIImage(named: photosName[indexPath.row]) else {

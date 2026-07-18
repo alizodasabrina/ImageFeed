@@ -16,28 +16,11 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="200" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Im8-tv-Lq4">
-                                <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
-                                <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="Ds0-tv-101"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Dg0-tv-102"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="Im8-tv-Lq4" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Fd2-9k-Tp1"/>
-                            <constraint firstItem="Im8-tv-Lq4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Lq7-3m-Vx0"/>
-                            <constraint firstAttribute="trailing" secondItem="Im8-tv-Lq4" secondAttribute="trailing" id="Rt4-pn-Wz8"/>
-                            <constraint firstAttribute="bottom" secondItem="Im8-tv-Lq4" secondAttribute="bottom" id="Bm5-qe-Xy3"/>
-                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="ImL-tbi-701"/>
                     <connections>
-                        <outlet property="tableView" destination="Im8-tv-Lq4" id="Ot9-tv-Kp2"/>
                         <segue destination="Sgl-VC-001" kind="presentation" identifier="ShowSingleImage" id="ImL-sg-702"/>
                     </connections>
                 </viewController>
