@@ -20,58 +20,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="200" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Im8-tv-Lq4">
                                 <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                                 <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ImagesListCell" rowHeight="200" id="Cll-pr-201" customClass="ImagesListCell" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="402" height="200"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Cll-pr-201" id="cv0-pr-202">
-                                            <rect key="frame" x="0.0" y="0.0" width="402" height="200"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Pic-vw-301">
-                                                    <rect key="frame" x="16" y="4" width="370" height="192"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="16"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lik-bt-302" userLabel="likeButton">
-                                                    <rect key="frame" x="342" y="4" width="44" height="44"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="44" id="Lik-wd-401"/>
-                                                        <constraint firstAttribute="height" constant="44" id="Lik-ht-402"/>
-                                                    </constraints>
-                                                    <state key="normal" image="like_button_on"/>
-                                                </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 июня 2026" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dat-lb-303" userLabel="dateLabel">
-                                                    <rect key="frame" x="24" y="172" width="150" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Pic-vw-301" firstAttribute="top" secondItem="cv0-pr-202" secondAttribute="top" constant="4" id="Cn1-pi-501"/>
-                                                <constraint firstItem="Pic-vw-301" firstAttribute="leading" secondItem="cv0-pr-202" secondAttribute="leading" constant="16" id="Cn2-pi-502"/>
-                                                <constraint firstAttribute="trailing" secondItem="Pic-vw-301" secondAttribute="trailing" constant="16" id="Cn3-pi-503"/>
-                                                <constraint firstAttribute="bottom" secondItem="Pic-vw-301" secondAttribute="bottom" constant="4" id="Cn4-pi-504"/>
-                                                <constraint firstItem="Lik-bt-302" firstAttribute="top" secondItem="Pic-vw-301" secondAttribute="top" id="Cn5-lk-505"/>
-                                                <constraint firstItem="Pic-vw-301" firstAttribute="trailing" secondItem="Lik-bt-302" secondAttribute="trailing" id="Cn6-lk-506"/>
-                                                <constraint firstItem="Dat-lb-303" firstAttribute="leading" secondItem="Pic-vw-301" secondAttribute="leading" constant="8" id="Cn7-dt-507"/>
-                                                <constraint firstItem="Pic-vw-301" firstAttribute="bottom" secondItem="Dat-lb-303" secondAttribute="bottom" constant="8" id="Cn8-dt-508"/>
-                                            </constraints>
-                                            <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <outlet property="photoImageView" destination="Pic-vw-301" id="Oc1-im-601"/>
-                                            <outlet property="dateLabel" destination="Dat-lb-303" id="Oc2-dt-602"/>
-                                            <outlet property="likeButton" destination="Lik-bt-302" id="Oc3-lk-603"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="Ds0-tv-101"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="Dg0-tv-102"/>
