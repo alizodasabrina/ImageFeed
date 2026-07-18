@@ -12,6 +12,7 @@ import WebKit
 
 enum WebViewConstants {
     static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+    static let progressTintColor = UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 1)
 }
 
 // MARK: - WebViewViewControllerDelegate
@@ -23,14 +24,24 @@ protocol WebViewViewControllerDelegate: AnyObject {
 
 final class WebViewViewController: UIViewController {
 
-    // MARK: - IBOutlets
-
-    @IBOutlet private var webView: WKWebView!
-    @IBOutlet private var progressView: UIProgressView!
-
     // MARK: - Private Properties
 
     private var estimatedProgressObservation: NSKeyValueObservation?
+
+    // MARK: - Subviews
+
+    private lazy var webView: WKWebView = {
+        let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        return webView
+    }()
+
+    private lazy var progressView: UIProgressView = {
+        let progressView = UIProgressView(progressViewStyle: .default)
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        progressView.progressTintColor = WebViewConstants.progressTintColor
+        return progressView
+    }()
 
     // MARK: - Public Properties
 
@@ -40,6 +51,9 @@ final class WebViewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        setupView()
+        setupConstraints()
 
         webView.navigationDelegate = self
 
@@ -63,6 +77,24 @@ final class WebViewViewController: UIViewController {
     }
 
     // MARK: - Private Methods
+
+    private func setupView() {
+        view.addSubview(webView)
+        view.addSubview(progressView)
+    }
+
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
+            view.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
+
+            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            progressView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: progressView.trailingAnchor)
+        ])
+    }
 
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)

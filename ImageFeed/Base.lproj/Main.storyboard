@@ -189,37 +189,10 @@
                     <view key="view" contentMode="scaleToFill" id="Web-vw-002">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Web-wk-003">
-                                <rect key="frame" x="0.0" y="59" width="402" height="815"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Web-pr-008">
-                                <rect key="frame" x="0.0" y="59" width="402" height="4"/>
-                                <color key="progressTintColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
-                            </progressView>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Web-sa-004"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="Web-wk-003" firstAttribute="top" secondItem="Web-sa-004" secondAttribute="top" id="Web-cn-101"/>
-                            <constraint firstItem="Web-wk-003" firstAttribute="leading" secondItem="Web-vw-002" secondAttribute="leading" id="Web-cn-102"/>
-                            <constraint firstAttribute="trailing" secondItem="Web-wk-003" secondAttribute="trailing" id="Web-cn-103"/>
-                            <constraint firstAttribute="bottom" secondItem="Web-wk-003" secondAttribute="bottom" id="Web-cn-104"/>
-                            <constraint firstItem="Web-pr-008" firstAttribute="top" secondItem="Web-sa-004" secondAttribute="top" id="Web-cn-105"/>
-                            <constraint firstItem="Web-pr-008" firstAttribute="leading" secondItem="Web-sa-004" secondAttribute="leading" id="Web-cn-106"/>
-                            <constraint firstItem="Web-sa-004" firstAttribute="trailing" secondItem="Web-pr-008" secondAttribute="trailing" id="Web-cn-107"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Web-ni-005"/>
-                    <connections>
-                        <outlet property="progressView" destination="Web-pr-008" id="Web-ot-009"/>
-                        <outlet property="webView" destination="Web-wk-003" id="Web-ot-006"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Web-fr-007" sceneMemberID="firstResponder"/>
             </objects>
