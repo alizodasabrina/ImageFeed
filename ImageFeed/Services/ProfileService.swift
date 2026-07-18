@@ -41,8 +41,6 @@ final class ProfileService {
     // MARK: - Public Methods
 
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
-        assert(Thread.isMainThread)
-
         task?.cancel()
 
         guard let request = makeProfileRequest(token: token) else {

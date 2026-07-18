@@ -40,8 +40,6 @@ final class ProfileImageService {
     // MARK: - Public Methods
 
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
-        assert(Thread.isMainThread)
-
         task?.cancel()
 
         guard let token = tokenStorage.token else {
