@@ -38,7 +38,7 @@ final class AuthViewController: UIViewController {
     // MARK: - Subviews
 
     private lazy var logoImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "auth_screen_logo"))
+        let imageView = UIImageView(image: UIImage(resource: .authScreenLogo))
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +50,7 @@ final class AuthViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Войти", for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: Constants.buttonFontSize)
-        button.tintColor = UIColor(named: "ypBlack")
+        button.tintColor = UIColor(resource: .ypBlack)
         button.backgroundColor = .white
         button.layer.cornerRadius = Constants.buttonCornerRadius
         button.layer.masksToBounds = true
@@ -111,10 +111,10 @@ final class AuthViewController: UIViewController {
     }
 
     private func configureBackButton() {
-        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
+        navigationController?.navigationBar.backIndicatorImage = UIImage(resource: .navBackButton)
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(resource: .navBackButton)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "ypBlack")
+        navigationItem.backBarButtonItem?.tintColor = UIColor(resource: .ypBlack)
     }
 }
 

@@ -89,7 +89,7 @@ final class ImagesListCell: UITableViewCell {
         photoImageView.image = image
         dateLabel.text = date
 
-        let likeImage = (isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off"))?.withRenderingMode(.alwaysOriginal)
+        let likeImage = UIImage(resource: isLiked ? .likeButtonOn : .likeButtonOff).withRenderingMode(.alwaysOriginal)
         likeButton.setImage(likeImage, for: .normal)
     }
 

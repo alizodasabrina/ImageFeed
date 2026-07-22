@@ -13,7 +13,7 @@ final class UIBlockingProgressHUD {
     // MARK: - Private Properties
 
     private static var window: UIWindow? {
-        return UIApplication.shared.windows.first
+        UIApplication.shared.windows.first
     }
 
     // MARK: - Public Methods
