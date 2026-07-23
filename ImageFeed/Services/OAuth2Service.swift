@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum AuthServiceError: Error {
+    case invalidRequest
+}
+
 final class OAuth2Service {
 
     // MARK: - Singleton
@@ -15,37 +19,46 @@ final class OAuth2Service {
 
     // MARK: - Private Properties
 
-    private let tokenStorage = OAuth2TokenStorage()
+    private let tokenStorage = OAuth2TokenStorage.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
 
     private init() {}
 
     // MARK: - Public Methods
 
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let request = makeOAuthTokenRequest(code: code) else {
-            print("[OAuth2Service]: invalidRequest")
-            completion(.failure(NetworkError.invalidRequest))
+        assert(Thread.isMainThread)
+
+        guard lastCode != code else {
+            print("[OAuth2Service.fetchAuthToken]: duplicate code - \(code)")
+            completion(.failure(AuthServiceError.invalidRequest))
             return
         }
 
-        let task = URLSession.shared.data(for: request) { [weak self] result in
+        task?.cancel()
+        lastCode = code
+
+        guard let request = makeOAuthTokenRequest(code: code) else {
+            print("[OAuth2Service.fetchAuthToken]: invalidRequest")
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            guard let self else { return }
             switch result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.keyDecodingStrategy = .convertFromSnakeCase
-                    let responseBody = try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                    self?.tokenStorage.token = responseBody.accessToken
-                    completion(.success(responseBody.accessToken))
-                } catch {
-                    print("[OAuth2Service]: decodingError - \(error)")
-                    completion(.failure(NetworkError.decodingError(error)))
-                }
+            case .success(let responseBody):
+                self.tokenStorage.token = responseBody.accessToken
+                completion(.success(responseBody.accessToken))
             case .failure(let error):
-                print("[OAuth2Service]: networkError - \(error)")
+                print("[OAuth2Service.fetchAuthToken]: \(error)")
                 completion(.failure(error))
             }
+            self.task = nil
+            self.lastCode = nil
         }
+        self.task = task
         task.resume()
     }
 
@@ -71,7 +84,7 @@ final class OAuth2Service {
         }
 
         var request = URLRequest(url: authTokenUrl)
-        request.httpMethod = "POST"
+        request.httpMethod = HTTPMethod.post.rawValue
         return request
     }
 }
