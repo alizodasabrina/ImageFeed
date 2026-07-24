@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
 
@@ -28,7 +29,7 @@ final class ImagesListCell: UITableViewCell {
 
     // MARK: - Subviews
 
-    private lazy var photoImageView: UIImageView = {
+    lazy var photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -39,13 +40,13 @@ final class ImagesListCell: UITableViewCell {
         return imageView
     }()
 
-    private lazy var likeButton: UIButton = {
+    lazy var likeButton: UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
-    private lazy var dateLabel: UILabel = {
+    lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: Constants.dateFontSize)
         label.textColor = .white
@@ -83,14 +84,9 @@ final class ImagesListCell: UITableViewCell {
         )
     }
 
-    // MARK: - Public Methods
-
-    func configure(image: UIImage, date: String, isLiked: Bool) {
-        photoImageView.image = image
-        dateLabel.text = date
-
-        let likeImage = UIImage(resource: isLiked ? .likeButtonOn : .likeButtonOff).withRenderingMode(.alwaysOriginal)
-        likeButton.setImage(likeImage, for: .normal)
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        photoImageView.kf.cancelDownloadTask()
     }
 
     // MARK: - Private Methods

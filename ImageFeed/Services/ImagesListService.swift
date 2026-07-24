@@ -42,8 +42,6 @@ final class ImagesListService {
 
     static let shared = ImagesListService()
 
-    private init() {}
-
     // MARK: - Public Properties
 
     private(set) var photos: [Photo] = []
@@ -106,6 +104,39 @@ final class ImagesListService {
         task.resume()
     }
 
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let request = makeLikeRequest(photoId: photoId, isLike: isLike) else {
+            print("[ImagesListService.changeLike]: invalidRequest")
+            completion(.failure(NetworkError.invalidRequest))
+            return
+        }
+
+        let task = urlSession.data(for: request) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success:
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    let photo = self.photos[index]
+                    let newPhoto = Photo(
+                        id: photo.id,
+                        size: photo.size,
+                        createdAt: photo.createdAt,
+                        welcomeDescription: photo.welcomeDescription,
+                        thumbImageURL: photo.thumbImageURL,
+                        largeImageURL: photo.largeImageURL,
+                        isLiked: !photo.isLiked
+                    )
+                    self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
+                }
+                completion(.success(()))
+            case .failure(let error):
+                print("[ImagesListService.changeLike]: \(error)")
+                completion(.failure(error))
+            }
+        }
+        task.resume()
+    }
+
     // MARK: - Private Methods
 
     private func makePhotosRequest(page: Int) -> URLRequest? {
@@ -123,5 +154,30 @@ final class ImagesListService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpMethod = HTTPMethod.get.rawValue
         return request
+    }
+
+    private func makeLikeRequest(photoId: String, isLike: Bool) -> URLRequest? {
+        guard let token = tokenStorage.token else {
+            print("[ImagesListService.makeLikeRequest]: token is missing")
+            return nil
+        }
+
+        guard let url = URL(string: "\(Constants.defaultBaseURLString)/photos/\(photoId)/like") else {
+            print("[ImagesListService.makeLikeRequest]: failed to create URL")
+            return nil
+        }
+
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = isLike ? HTTPMethod.post.rawValue : HTTPMethod.delete.rawValue
+        return request
+    }
+}
+
+extension Array {
+    func withReplaced(itemAt index: Int, newValue: Element) -> [Element] {
+        var newArray = self
+        newArray[index] = newValue
+        return newArray
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ImagesListViewController: UIViewController {
 
@@ -21,7 +22,9 @@ final class ImagesListViewController: UIViewController {
 
     // MARK: - Private Properties
 
-    private let photosName: [String] = Array(0..<20).map { "\($0)" }
+    private var photos: [Photo] = []
+    private let imagesListService = ImagesListService.shared
+    private var imagesListServiceObserver: NSObjectProtocol?
 
     // MARK: - Subviews
 
@@ -59,6 +62,19 @@ final class ImagesListViewController: UIViewController {
             bottom: Constants.verticalInset,
             right: 0
         )
+
+        imagesListServiceObserver = NotificationCenter.default.addObserver(
+            forName: ImagesListService.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self else { return }
+            self.updateTableViewAnimated()
+        }
+
+        if imagesListService.photos.isEmpty {
+            imagesListService.fetchPhotosNextPage()
+        }
     }
 
     // MARK: - Navigation
@@ -67,20 +83,33 @@ final class ImagesListViewController: UIViewController {
         if segue.identifier == showSingleImageSegueIdentifier {
             guard
                 let viewController = segue.destination as? SingleImageViewController,
-                let indexPath = sender as? IndexPath
+                sender is IndexPath
             else {
                 assertionFailure("Invalid segue destination")
                 return
             }
 
-            let image = UIImage(named: photosName[indexPath.row])
-            viewController.image = image
+            viewController.image = nil
         } else {
             super.prepare(for: segue, sender: sender)
         }
     }
 
     // MARK: - Private Methods
+
+    func updateTableViewAnimated() {
+        let oldCount = photos.count
+        let newCount = imagesListService.photos.count
+        photos = imagesListService.photos
+        if oldCount != newCount {
+            tableView.performBatchUpdates {
+                let indexPaths = (oldCount..<newCount).map { i in
+                    IndexPath(row: i, section: 0)
+                }
+                tableView.insertRows(at: indexPaths, with: .automatic)
+            }
+        }
+    }
 
     private func setupView() {
         view.backgroundColor = Constants.backgroundColor
@@ -97,13 +126,19 @@ final class ImagesListViewController: UIViewController {
     }
 
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return
-        }
+        let photo = photos[indexPath.row]
 
-        let date = dateFormatter.string(from: Date())
-        let isLiked = indexPath.row % 2 == 0
-        cell.configure(image: image, date: date, isLiked: isLiked)
+        cell.photoImageView.kf.indicatorType = .activity
+        cell.photoImageView.kf.setImage(
+            with: URL(string: photo.thumbImageURL),
+            placeholder: UIImage(named: "image_placeholder")
+        )
+
+        cell.dateLabel.text = photo.createdAt.map { dateFormatter.string(from: $0) } ?? ""
+
+        let likeImage = UIImage(resource: photo.isLiked ? .likeButtonOn : .likeButtonOff)
+            .withRenderingMode(.alwaysOriginal)
+        cell.likeButton.setImage(likeImage, for: .normal)
     }
 }
 
@@ -111,7 +146,7 @@ final class ImagesListViewController: UIViewController {
 
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return photosName.count
+        photos.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -135,14 +170,18 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return 0
-        }
+        let image = photos[indexPath.row]
 
         let imageInsets = Constants.imageInsets
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
         let scale = imageViewWidth / image.size.width
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row + 1 == photos.count {
+            imagesListService.fetchPhotosNextPage()
+        }
     }
 }
