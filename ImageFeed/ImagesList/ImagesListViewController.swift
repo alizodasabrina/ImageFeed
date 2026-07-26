@@ -83,13 +83,14 @@ final class ImagesListViewController: UIViewController {
         if segue.identifier == showSingleImageSegueIdentifier {
             guard
                 let viewController = segue.destination as? SingleImageViewController,
-                sender is IndexPath
+                let indexPath = sender as? IndexPath
             else {
                 assertionFailure("Invalid segue destination")
                 return
             }
 
-            viewController.image = nil
+            let photo = photos[indexPath.row]
+            viewController.fullImageURL = URL(string: photo.largeImageURL)
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -128,6 +129,8 @@ final class ImagesListViewController: UIViewController {
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let photo = photos[indexPath.row]
 
+        cell.delegate = self
+
         cell.photoImageView.kf.indicatorType = .activity
         cell.photoImageView.kf.setImage(
             with: URL(string: photo.thumbImageURL),
@@ -135,10 +138,17 @@ final class ImagesListViewController: UIViewController {
         )
 
         cell.dateLabel.text = photo.createdAt.map { dateFormatter.string(from: $0) } ?? ""
+        cell.setIsLiked(photo.isLiked)
+    }
 
-        let likeImage = UIImage(resource: photo.isLiked ? .likeButtonOn : .likeButtonOff)
-            .withRenderingMode(.alwaysOriginal)
-        cell.likeButton.setImage(likeImage, for: .normal)
+    private func showLikeErrorAlert() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так",
+            message: "Не удалось поставить лайк",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Ок", style: .default))
+        present(alert, animated: true)
     }
 }
 
@@ -182,6 +192,30 @@ extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == photos.count {
             imagesListService.fetchPhotosNextPage()
+        }
+    }
+}
+
+// MARK: - ImagesListCellDelegate
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success:
+                self.photos = self.imagesListService.photos
+                cell.setIsLiked(self.photos[indexPath.row].isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                print("[ImagesListViewController.imageListCellDidTapLike]: \(error)")
+                self.showLikeErrorAlert()
+            }
         }
     }
 }

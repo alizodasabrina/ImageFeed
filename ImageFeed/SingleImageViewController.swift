@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
 
@@ -23,13 +24,10 @@ final class SingleImageViewController: UIViewController {
 
     // MARK: - Public Properties
 
-    var image: UIImage? {
+    var fullImageURL: URL? {
         didSet {
-            guard isViewLoaded, let image else { return }
-
-            imageView.image = image
-            imageView.frame.size = image.size
-            rescaleAndCenterImageInScrollView(image: image)
+            guard isViewLoaded else { return }
+            loadImage()
         }
     }
 
@@ -78,10 +76,7 @@ final class SingleImageViewController: UIViewController {
         scrollView.maximumZoomScale = Constants.maximumZoomScale
         scrollView.delegate = self
 
-        guard let image else { return }
-        imageView.image = image
-        imageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
+        loadImage()
     }
 
     // MARK: - Actions
@@ -91,7 +86,7 @@ final class SingleImageViewController: UIViewController {
     }
 
     @objc private func didTapShareButton() {
-        guard let image else { return }
+        guard let image = imageView.image else { return }
 
         let share = UIActivityViewController(
             activityItems: [image],
@@ -101,6 +96,34 @@ final class SingleImageViewController: UIViewController {
     }
 
     // MARK: - Private Methods
+
+    private func loadImage() {
+        UIBlockingProgressHUD.show()
+        imageView.kf.setImage(with: fullImageURL) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self else { return }
+            switch result {
+            case .success(let imageResult):
+                self.imageView.frame.size = imageResult.image.size
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                self.showError()
+            }
+        }
+    }
+
+    private func showError() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так. Попробовать ещё раз?",
+            message: nil,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Не надо", style: .default))
+        alert.addAction(UIAlertAction(title: "Повторить", style: .default) { [weak self] _ in
+            self?.loadImage()
+        })
+        present(alert, animated: true)
+    }
 
     private func setupView() {
         view.backgroundColor = Constants.backgroundColor

@@ -8,11 +8,19 @@
 import UIKit
 import Kingfisher
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
 
     // MARK: - Constants
 
     static let reuseIdentifier = "ImagesListCell"
+
+    // MARK: - Public Properties
+
+    weak var delegate: ImagesListCellDelegate?
 
     private enum Constants {
         static let cornerRadius: CGFloat = 16
@@ -40,8 +48,9 @@ final class ImagesListCell: UITableViewCell {
         return imageView
     }()
 
-    lazy var likeButton: UIButton = {
+    private lazy var likeButton: UIButton = {
         let button = UIButton(type: .custom)
+        button.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -87,6 +96,20 @@ final class ImagesListCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         photoImageView.kf.cancelDownloadTask()
+    }
+
+    // MARK: - Actions
+
+    @objc private func didTapLikeButton() {
+        delegate?.imageListCellDidTapLike(self)
+    }
+
+    // MARK: - Public Methods
+
+    func setIsLiked(_ isLiked: Bool) {
+        let likeImage = UIImage(resource: isLiked ? .likeButtonOn : .likeButtonOff)
+            .withRenderingMode(.alwaysOriginal)
+        likeButton.setImage(likeImage, for: .normal)
     }
 
     // MARK: - Private Methods
