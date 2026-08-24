@@ -36,7 +36,7 @@ final class ImagesListService {
 
     // MARK: - Notification
 
-    static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    static let didChangeNotification = Notification.Name("ImagesListServiceDidChange")
 
     // MARK: - Singleton
 
@@ -83,13 +83,11 @@ final class ImagesListService {
                     )
                 }
                 self.lastLoadedPage = nextPage
-                DispatchQueue.main.async {
-                    self.photos.append(contentsOf: newPhotos)
-                    NotificationCenter.default.post(
-                        name: ImagesListService.didChangeNotification,
-                        object: self
-                    )
-                }
+                self.photos.append(contentsOf: newPhotos)
+                NotificationCenter.default.post(
+                    name: ImagesListService.didChangeNotification,
+                    object: self
+                )
             case .failure(let error):
                 print("[ImagesListService.fetchPhotosNextPage]: \(error)")
             }
@@ -173,13 +171,5 @@ final class ImagesListService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpMethod = isLike ? HTTPMethod.post.rawValue : HTTPMethod.delete.rawValue
         return request
-    }
-}
-
-extension Array {
-    func withReplaced(itemAt index: Int, newValue: Element) -> [Element] {
-        var newArray = self
-        newArray[index] = newValue
-        return newArray
     }
 }

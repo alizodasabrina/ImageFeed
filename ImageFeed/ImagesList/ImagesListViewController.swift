@@ -134,7 +134,7 @@ final class ImagesListViewController: UIViewController {
         cell.photoImageView.kf.indicatorType = .activity
         cell.photoImageView.kf.setImage(
             with: URL(string: photo.thumbImageURL),
-            placeholder: UIImage(named: "image_placeholder")
+            placeholder: UIImage(resource: .imagePlaceholder)
         )
 
         cell.dateLabel.text = photo.createdAt.map { dateFormatter.string(from: $0) } ?? ""
@@ -205,14 +205,13 @@ extension ImagesListViewController: ImagesListCellDelegate {
 
         UIBlockingProgressHUD.show()
         imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
             guard let self else { return }
             switch result {
             case .success:
                 self.photos = self.imagesListService.photos
                 cell.setIsLiked(self.photos[indexPath.row].isLiked)
-                UIBlockingProgressHUD.dismiss()
             case .failure(let error):
-                UIBlockingProgressHUD.dismiss()
                 print("[ImagesListViewController.imageListCellDidTapLike]: \(error)")
                 self.showLikeErrorAlert()
             }
