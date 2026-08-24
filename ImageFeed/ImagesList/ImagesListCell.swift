@@ -6,12 +6,21 @@
 //
 
 import UIKit
+import Kingfisher
+
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
 
 final class ImagesListCell: UITableViewCell {
 
     // MARK: - Constants
 
     static let reuseIdentifier = "ImagesListCell"
+
+    // MARK: - Public Properties
+
+    weak var delegate: ImagesListCellDelegate?
 
     private enum Constants {
         static let cornerRadius: CGFloat = 16
@@ -28,7 +37,7 @@ final class ImagesListCell: UITableViewCell {
 
     // MARK: - Subviews
 
-    private lazy var photoImageView: UIImageView = {
+    lazy var photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -41,11 +50,12 @@ final class ImagesListCell: UITableViewCell {
 
     private lazy var likeButton: UIButton = {
         let button = UIButton(type: .custom)
+        button.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
-    private lazy var dateLabel: UILabel = {
+    lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: Constants.dateFontSize)
         label.textColor = .white
@@ -83,13 +93,22 @@ final class ImagesListCell: UITableViewCell {
         )
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        photoImageView.kf.cancelDownloadTask()
+    }
+
+    // MARK: - Actions
+
+    @objc private func didTapLikeButton() {
+        delegate?.imageListCellDidTapLike(self)
+    }
+
     // MARK: - Public Methods
 
-    func configure(image: UIImage, date: String, isLiked: Bool) {
-        photoImageView.image = image
-        dateLabel.text = date
-
-        let likeImage = UIImage(resource: isLiked ? .likeButtonOn : .likeButtonOff).withRenderingMode(.alwaysOriginal)
+    func setIsLiked(_ isLiked: Bool) {
+        let likeImage = UIImage(resource: isLiked ? .likeButtonOn : .likeButtonOff)
+            .withRenderingMode(.alwaysOriginal)
         likeButton.setImage(likeImage, for: .normal)
     }
 
