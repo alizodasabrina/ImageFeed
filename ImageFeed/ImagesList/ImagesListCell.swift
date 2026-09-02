@@ -110,6 +110,7 @@ final class ImagesListCell: UITableViewCell {
         let likeImage = UIImage(resource: isLiked ? .likeButtonOn : .likeButtonOff)
             .withRenderingMode(.alwaysOriginal)
         likeButton.setImage(likeImage, for: .normal)
+        likeButton.accessibilityIdentifier = isLiked ? "like button on" : "like button off"
     }
 
     // MARK: - Private Methods

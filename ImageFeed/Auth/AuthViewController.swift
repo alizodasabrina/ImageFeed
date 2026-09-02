@@ -55,6 +55,7 @@ final class AuthViewController: UIViewController {
         button.layer.cornerRadius = Constants.buttonCornerRadius
         button.layer.masksToBounds = true
         button.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
+        button.accessibilityIdentifier = "authenticate button"
         return button
     }()
 
@@ -76,6 +77,10 @@ final class AuthViewController: UIViewController {
                 assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
                 return
             }
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+            webViewViewController.presenter = webViewPresenter
+            webViewPresenter.view = webViewViewController
             webViewViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)

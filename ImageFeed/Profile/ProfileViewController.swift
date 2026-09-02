@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
 
     // MARK: - Constants
 
@@ -21,9 +21,12 @@ final class ProfileViewController: UIViewController {
         static let verticalSpacing: CGFloat = 8
         static let nameFontSize: CGFloat = 23
         static let secondaryFontSize: CGFloat = 13
-        static let backgroundColor = UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 1)
         static let loginColor = UIColor(red: 0.682, green: 0.686, blue: 0.706, alpha: 1)
     }
+
+    // MARK: - Public Properties
+
+    var presenter: ProfilePresenterProtocol?
 
     // MARK: - Private Properties
 
@@ -40,6 +43,7 @@ final class ProfileViewController: UIViewController {
     private lazy var logoutButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(resource: .logoutButton), for: .normal)
+        button.accessibilityIdentifier = "logout button"
         button.addTarget(self, action: #selector(didTapLogoutButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -79,12 +83,10 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Constants.backgroundColor
+        view.backgroundColor = UIColor(resource: .ypBlack)
         setupConstraints()
 
-        if let profile = ProfileService.shared.profile {
-            updateProfileDetails(profile: profile)
-        }
+        presenter?.viewDidLoad()
 
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
@@ -108,24 +110,15 @@ final class ProfileViewController: UIViewController {
         )
         alert.addAction(UIAlertAction(title: "Нет", style: .cancel))
         alert.addAction(UIAlertAction(title: "Да", style: .destructive) { [weak self] _ in
-            self?.performLogout()
+            self?.presenter?.didTapLogout()
+            self?.switchToSplash()
         })
         present(alert, animated: true)
     }
 
-    private func performLogout() {
-        ProfileLogoutService.shared.logout()
-        guard let window = UIApplication.shared.connectedScenes
-            .compactMap({ $0 as? UIWindowScene })
-            .flatMap({ $0.windows })
-            .first(where: { $0.isKeyWindow })
-        else { return }
-        window.rootViewController = SplashViewController()
-    }
+    // MARK: - Public Methods
 
-    // MARK: - Private Methods
-
-    private func updateProfileDetails(profile: Profile) {
+    func updateProfileDetails(profile: Profile) {
         nameLabel.text = profile.name.isEmpty
             ? "Имя не указано"
             : profile.name
@@ -135,6 +128,24 @@ final class ProfileViewController: UIViewController {
         descriptionLabel.text = (profile.bio?.isEmpty ?? true)
             ? "Профиль не заполнен"
             : profile.bio
+    }
+
+    func cleanAvatarAndLabels() {
+        nameLabel.text = nil
+        loginNameLabel.text = nil
+        descriptionLabel.text = nil
+        avatarImageView.image = UIImage(resource: .avatar)
+    }
+
+    // MARK: - Private Methods
+
+    private func switchToSplash() {
+        guard let window = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow })
+        else { return }
+        window.rootViewController = SplashViewController()
     }
 
     private func updateAvatar() {
