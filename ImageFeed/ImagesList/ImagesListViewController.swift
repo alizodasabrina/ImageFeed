@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-final class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
 
     // MARK: - Constants
 
@@ -20,11 +20,14 @@ final class ImagesListViewController: UIViewController {
         static let backgroundColor = UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 1)
     }
 
+    // MARK: - Public Properties
+
+    var presenter: ImagesListPresenterProtocol?
+
     // MARK: - Private Properties
 
     private var photos: [Photo] = []
     private let imagesListService = ImagesListService.shared
-    private var imagesListServiceObserver: NSObjectProtocol?
 
     // MARK: - Subviews
 
@@ -63,18 +66,7 @@ final class ImagesListViewController: UIViewController {
             right: 0
         )
 
-        imagesListServiceObserver = NotificationCenter.default.addObserver(
-            forName: ImagesListService.didChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            guard let self else { return }
-            self.updateTableViewAnimated()
-        }
-
-        if imagesListService.photos.isEmpty {
-            imagesListService.fetchPhotosNextPage()
-        }
+        presenter?.viewDidLoad()
     }
 
     // MARK: - Navigation
@@ -191,7 +183,7 @@ extension ImagesListViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == photos.count {
-            imagesListService.fetchPhotosNextPage()
+            presenter?.fetchPhotosNextPage()
         }
     }
 }
