@@ -8,13 +8,6 @@
 import UIKit
 import WebKit
 
-// MARK: - Constants
-
-enum WebViewConstants {
-    static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-    static let progressTintColor = UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 1)
-}
-
 // MARK: - WebViewViewControllerDelegate
 
 protocol WebViewViewControllerDelegate: AnyObject {
@@ -22,7 +15,28 @@ protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
 
-final class WebViewViewController: UIViewController {
+private enum ViewConstants {
+    static let progressTintColor = UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 1)
+}
+
+// MARK: - WebViewViewControllerProtocol
+
+protocol WebViewViewControllerProtocol: AnyObject {
+    var presenter: WebViewPresenterProtocol? { get set }
+    func load(request: URLRequest)
+    func setProgressValue(_ newValue: Float)
+    func setProgressHidden(_ isHidden: Bool)
+}
+
+// MARK: - WebViewViewController
+
+final class WebViewViewController: UIViewController, WebViewViewControllerProtocol {
+
+    // MARK: - Public Properties
+
+    var presenter: WebViewPresenterProtocol?
+
+    weak var delegate: WebViewViewControllerDelegate?
 
     // MARK: - Private Properties
 
@@ -39,13 +53,9 @@ final class WebViewViewController: UIViewController {
     private lazy var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .default)
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        progressView.progressTintColor = WebViewConstants.progressTintColor
+        progressView.progressTintColor = ViewConstants.progressTintColor
         return progressView
     }()
-
-    // MARK: - Public Properties
-
-    weak var delegate: WebViewViewControllerDelegate?
 
     // MARK: - Lifecycle
 
@@ -57,9 +67,7 @@ final class WebViewViewController: UIViewController {
 
         webView.navigationDelegate = self
 
-        loadAuthView()
-
-        updateProgress()
+        presenter?.viewDidLoad()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -67,13 +75,26 @@ final class WebViewViewController: UIViewController {
 
         estimatedProgressObservation = webView.observe(
             \.estimatedProgress,
-            options: [],
-            changeHandler: { [weak self] _, _ in
+            options: [.new],
+            changeHandler: { [weak self] webView, _ in
                 guard let self else { return }
-                self.updateProgress()
+                self.presenter?.didUpdateProgressValue(webView.estimatedProgress)
             }
         )
-        updateProgress()
+    }
+
+    // MARK: - Public Methods
+
+    func load(request: URLRequest) {
+        webView.load(request)
+    }
+
+    func setProgressValue(_ newValue: Float) {
+        progressView.progress = newValue
+    }
+
+    func setProgressHidden(_ isHidden: Bool) {
+        progressView.isHidden = isHidden
     }
 
     // MARK: - Private Methods
@@ -95,33 +116,6 @@ final class WebViewViewController: UIViewController {
             view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: progressView.trailingAnchor)
         ])
     }
-
-    private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-    }
-
-    private func loadAuthView() {
-        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
-            print("[WebViewViewController.loadAuthView]: failed to create URLComponents from \(WebViewConstants.unsplashAuthorizeURLString)")
-            return
-        }
-
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.accessKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: Constants.accessScope)
-        ]
-
-        guard let url = urlComponents.url else {
-            print("[WebViewViewController.loadAuthView]: failed to create URL from urlComponents")
-            return
-        }
-
-        let request = URLRequest(url: url)
-        webView.load(request)
-    }
 }
 
 // MARK: - WKNavigationDelegate
@@ -141,16 +135,9 @@ extension WebViewViewController: WKNavigationDelegate {
     }
 
     private func code(from navigationAction: WKNavigationAction) -> String? {
-        if
-            let url = navigationAction.request.url,
-            let urlComponents = URLComponents(string: url.absoluteString),
-            urlComponents.path == "/oauth/authorize/native",
-            let items = urlComponents.queryItems,
-            let codeItem = items.first(where: { $0.name == "code" })
-        {
-            return codeItem.value
-        } else {
-            return nil
+        if let url = navigationAction.request.url {
+            return presenter?.code(from: url)
         }
+        return nil
     }
 }
