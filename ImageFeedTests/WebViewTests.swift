@@ -45,7 +45,6 @@ final class WebViewTests: XCTestCase {
         let viewController = WebViewViewControllerSpy()
         let authHelper = AuthHelper()
         let presenter = WebViewPresenter(authHelper: authHelper)
-        viewController.presenter = presenter
         presenter.view = viewController
 
         self.viewControllerSpy = viewController

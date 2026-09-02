@@ -73,20 +73,20 @@ final class ImageFeedUITests: XCTestCase {
         let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
         cell.swipeUp()
 
-        sleep(2)
-
         let cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 1)
+        let likeButtonOff = cellToLike.buttons["like button off"]
+        XCTAssertTrue(likeButtonOff.waitForExistence(timeout: 5))
+        likeButtonOff.tap()
 
-        cellToLike.buttons["like button off"].tap()
-        cellToLike.buttons["like button on"].tap()
-
-        sleep(2)
+        let likeButtonOn = cellToLike.buttons["like button on"]
+        XCTAssertTrue(likeButtonOn.waitForExistence(timeout: 5))
+        likeButtonOn.tap()
+        XCTAssertTrue(likeButtonOff.waitForExistence(timeout: 5))
 
         cellToLike.tap()
 
-        sleep(2)
-
         let image = app.scrollViews.images.element(boundBy: 0)
+        XCTAssertTrue(image.waitForExistence(timeout: 5))
         // Zoom in
         image.pinch(withScale: 3, velocity: 1) // zoom in
         // Zoom out
@@ -97,18 +97,21 @@ final class ImageFeedUITests: XCTestCase {
     }
 
     func testProfile() throws {
-        sleep(3)
-        app.tabBars.buttons.element(boundBy: 1).tap()
+        let profileTabButton = app.tabBars.buttons.element(boundBy: 1)
+        XCTAssertTrue(profileTabButton.waitForExistence(timeout: 5))
+        profileTabButton.tap()
 
-        let expectedName = ProcessInfo.processInfo.environment["UNSPLASH_NAME"] ?? ""
-        let expectedLogin = ProcessInfo.processInfo.environment["UNSPLASH_LOGIN"] ?? ""
+        let expectedName = try XCTUnwrap(
+            ProcessInfo.processInfo.environment["UNSPLASH_NAME"],
+            "UNSPLASH_NAME env var must be set to run testProfile"
+        )
+        let expectedLogin = try XCTUnwrap(
+            ProcessInfo.processInfo.environment["UNSPLASH_LOGIN"],
+            "UNSPLASH_LOGIN env var must be set to run testProfile"
+        )
 
-        if !expectedName.isEmpty {
-            XCTAssertTrue(app.staticTexts[expectedName].exists)
-        }
-        if !expectedLogin.isEmpty {
-            XCTAssertTrue(app.staticTexts[expectedLogin].exists)
-        }
+        XCTAssertTrue(app.staticTexts[expectedName].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts[expectedLogin].exists)
 
         app.buttons["logout button"].tap()
 

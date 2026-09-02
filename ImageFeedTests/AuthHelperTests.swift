@@ -16,9 +16,9 @@ final class AuthHelperTests: XCTestCase {
 
     // MARK: - Tests
 
-    func testCodeFromURL() {
+    func testCodeFromURL() throws {
         //given
-        let url = URL(string: "https://unsplash.com/oauth/authorize/native?code=test_code")!
+        let url = try XCTUnwrap(URL(string: "https://unsplash.com/oauth/authorize/native?code=test_code"))
 
         //when
         let code = authHelper.code(from: url)
@@ -27,9 +27,9 @@ final class AuthHelperTests: XCTestCase {
         XCTAssertEqual(code, "test_code") // return value verification
     }
 
-    func testCodeFromURLWithWrongPath() {
+    func testCodeFromURLWithWrongPath() throws {
         //given
-        let url = URL(string: "https://unsplash.com/noauth/authorize/native?code=test_code")!
+        let url = try XCTUnwrap(URL(string: "https://unsplash.com/noauth/authorize/native?code=test_code"))
 
         //when
         let code = authHelper.code(from: url)
@@ -38,9 +38,9 @@ final class AuthHelperTests: XCTestCase {
         XCTAssertNil(code)
     }
 
-    func testCodeFromURLWithoutCodeParameter() {
+    func testCodeFromURLWithoutCodeParameter() throws {
         //given
-        let url = URL(string: "https://unsplash.com/oauth/authorize/native?not_code=other")!
+        let url = try XCTUnwrap(URL(string: "https://unsplash.com/oauth/authorize/native?not_code=other"))
 
         //when
         let code = authHelper.code(from: url)

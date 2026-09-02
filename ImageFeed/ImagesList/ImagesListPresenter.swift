@@ -47,6 +47,12 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
             }
     }
 
+    deinit {
+        if let imagesListServiceObserver {
+            NotificationCenter.default.removeObserver(imagesListServiceObserver)
+        }
+    }
+
     // MARK: - Public Methods
 
     func viewDidLoad() {
